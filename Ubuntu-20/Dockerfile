@@ -144,7 +144,7 @@ COPY init_edkrepo_conf.sh /usr/bin/init_edkrepo_conf
 
 #Building qemu from source:
 FROM build AS test
-ARG QEMU_URL="https://download.qemu.org/qemu-7.1.0.tar.xz"
+ARG QEMU_URL=https://download.qemu.org/qemu-8.0.2.tar.xz
 RUN apt-get update && apt-get install --yes --no-install-recommends \
         autoconf \
         automake \
@@ -156,10 +156,10 @@ RUN apt-get update && apt-get install --yes --no-install-recommends \
         libsdl2-dev \
         ninja-build \
         bc \
-        tar && \
-    mkdir -p qemu-build && cd qemu-build && \
+        tar  && \
+   mkdir -p qemu-build && cd qemu-build && \
     wget  "${QEMU_URL}" && \
-    tar -xf qemu-7.1.0.tar.xz --strip-components=1 && \
+    tar  -xvJf qemu-8.0.2.tar.xz --strip-components=1 && \
     ./configure --target-list=x86_64-softmmu,arm-softmmu,aarch64-softmmu,riscv32-softmmu,riscv32-linux-user,riscv64-linux-user,riscv64-softmmu && \
     make install -j $(nproc) && \
     cd .. && \
