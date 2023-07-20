@@ -181,7 +181,15 @@ RUN apt-get update && \
         less \
         bear &&\
     apt-get clean
-
-# Setup the entry point
-COPY ubuntu20_dev_entrypoint.sh /usr/libexec/entrypoint
-ENTRYPOINT ["/usr/libexec/entrypoint"]
+# install libtpm && swtpm 
+RUN  apt-get update && apt  install -y  dh-autoreconf libssl-dev \
+     libtasn1-6-dev pkg-config gdb \
+          net-tools iproute2 libjson-glib-dev \
+               libgnutls28-dev expect gawk socat \
+                    make 
+WORKDIR /root/
+RUN git clone https://github.com/stefanberger/libtpms && \
+    cd libtpms && ./autogen.sh --with-openssl --prefix=/usr --with-tpm2 && \
+    make -j$(nproc) && make install && cd .. && git clone https://github.com/stefanberger/swtpm && \
+    cd swtpm && ./autogen.sh --with-openssl --prefix=/usr --without-seccomp --with-tpm2 --enable-debug && \
+    make -j$(nproc) && make install && rm -rf /root/* 
