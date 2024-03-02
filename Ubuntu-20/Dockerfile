@@ -160,7 +160,7 @@ RUN apt-get update && apt-get install --yes --no-install-recommends \
    mkdir -p qemu-build && cd qemu-build && \
     wget  "${QEMU_URL}" && \
     tar  -xvJf qemu-8.0.2.tar.xz --strip-components=1 && \
-    ./configure --target-list=x86_64-softmmu,arm-softmmu,aarch64-softmmu,riscv32-softmmu,riscv32-linux-user,riscv64-linux-user,riscv64-softmmu && \
+    ./configure --target-list=x86_64-softmmu && \
     make install -j $(nproc) && \
     cd .. && \
     rm -rf qemu-build && \
